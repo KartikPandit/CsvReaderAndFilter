@@ -14,7 +14,7 @@ namespace CSV
             Console.WriteLine("Enter the location");
             String location = Console.ReadLine();
             string delimiter = ",";
-            List<string> logs = (File.ReadAllLines(@"C:\Users\yuhub\OneDrive\Desktop\records.csv")
+            List<string> logs = (File.ReadAllLines(@"C:\Users\yuhub\OneDrive\Desktop\record.csv")
                                 .Select(line => line.Split(delimiter.ToCharArray()))
                                 .Where(values => values[2].Equals(location, StringComparison.CurrentCultureIgnoreCase))
                                 .Select(values => string.Join(",", values))
@@ -37,7 +37,7 @@ namespace CSV
             Console.WriteLine("Enter the designation");
             String designation = Console.ReadLine();
             string delimiter = ",";
-            List<string> logs = (File.ReadAllLines(@"C:\Users\yuhub\OneDrive\Desktop\records.csv")
+            List<string> logs = (File.ReadAllLines(@"C:\Users\yuhub\OneDrive\Desktop\record.csv")
                     .Select(line => line.Split(delimiter.ToCharArray(), StringSplitOptions.RemoveEmptyEntries))
                     .Where(values => values[3].Equals(designation, StringComparison.CurrentCultureIgnoreCase))
                     .Select(values => string.Join(",", values))
@@ -59,7 +59,7 @@ namespace CSV
                  String delimiter = ",";
             Console.Write("enter dob");
             String dob = Console.ReadLine();
-            List<string> logs = (File.ReadAllLines(@"C:\Users\yuhub\OneDrive\Desktop\records.csv")
+            List<string> logs = (File.ReadAllLines(@"C:\Users\yuhub\OneDrive\Desktop\record.csv")
                     .Where(line => !string.IsNullOrEmpty(line))
                     .Select(line => line.Split(delimiter.ToCharArray(), StringSplitOptions.RemoveEmptyEntries))
                     .Where(values => String.Compare(values[1],dob)>0)
