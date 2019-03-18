@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,6 +7,25 @@ using System.Threading.Tasks;
 
 namespace CSV
 {
+    public class MyMappedCSVFile
+    {
+        public string Name { get; set; }
+        public string dob { get; set; }
+        public string EID { get; set; }
+        public string location { get; set; }
+        public string desig { get; set; }
+        
+        public static MyMappedCSVFile FromCsv (string csvLine)
+        {
+            string[] values = csvLine.Split(',');
+            MyMappedCSVFile obj = new MyMappedCSVFile();
+            obj.Name = values[0];
+            obj.dob = values[1];
+            obj.location = values[2];
+            obj.desig = (values[3]);
+            return obj;
+        }
+    }
     public class Program
     {
         public static void search_on_location ()
@@ -56,27 +75,23 @@ namespace CSV
         }
         public static void search_on_dob ()
         {
-                 String delimiter = ",";
-            Console.Write("enter dob");
-            String dob = Console.ReadLine();
-            List<string> logs = (File.ReadAllLines(@"C:\Users\yuhub\OneDrive\Desktop\record.csv")
-                    .Where(line => !string.IsNullOrEmpty(line))
-                    .Select(line => line.Split(delimiter.ToCharArray(), StringSplitOptions.RemoveEmptyEntries))
-                    .Where(values => String.Compare(values[1],dob)>0)
-                    .Select(values => string.Join(",", values))
-                 .Distinct()
-                 .ToList<string>());
-            if (!logs.Any())
+            List<MyMappedCSVFile> values = File.ReadAllLines(@"C:\Users\yuhub\OneDrive\Desktop\record.csv")
+                                          .Skip(1)
+                                          .Select(v => MyMappedCSVFile.FromCsv(v))
+                                          .ToList();
+            Console.Write("enter dob \n");
+            DateTime dob = DateTime.Parse(Console.ReadLine());
+            foreach (var record in values)
             {
-                Console.WriteLine(dob + " Not found");
-            }
-            else
-            {
-                foreach (var col in logs)
-                    Console.WriteLine(col);
-                Console.ReadKey();
-            }
+                DateTime.TryParseExact(record.dob, "MM/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime date);
+                if (DateTime.Compare(date, dob) >= 0)
+                {
+                    Console.WriteLine(record.Name + "," + record.dob + "," + record.location + "," + record.desig);
+                }
+                
 
+            }
         }
     }
 }
+
